@@ -22,11 +22,11 @@ class InfoMessage:
 
 
 class Training:
-    LEN_STEP : float = 0.65
-    M_IN_KM : float = 1000
-    MIN_IN_H : float = 60
-    CALORIES_MEAN_SPEED_MULTIPLIER : float = 18
-    CALORIES_MEAN_SPEED_SHIFT : float = 1.79
+    LEN_STEP: float = 0.65
+    M_IN_KM: float = 1000
+    MIN_IN_H: float = 60
+    CALORIES_MEAN_SPEED_MULTIPLIER: float = 18
+    CALORIES_MEAN_SPEED_SHIFT: float = 1.79
 
     def __init__(self,
                  action: int,
@@ -73,8 +73,8 @@ class Running(Training):
 class SportsWalking(Training):
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     CALORIES_WEIGHT_MULTIPLIER: float = 0.035
-    KMH_IN_MSEC : float = 0.278
-    CM_IN_M : float = 100
+    KMH_IN_MSEC: float = 0.278
+    CM_IN_M: float = 100
 
     def __init__(self, action: int, duration: float,
                  weight: float, height: float) -> None:

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import *
+from typing import Type, List
 
 
 @dataclass
@@ -125,7 +125,7 @@ DATA_TRAININGS: dict[str, Type[Training]] = {
 
 
 def read_package(workout_type: str,
-                 data: list[int],
+                 data: List[int],
                  ) -> Training:
     return DATA_TRAININGS[workout_type](*data)
 

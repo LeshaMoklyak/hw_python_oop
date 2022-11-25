@@ -21,7 +21,7 @@ class InfoMessage:
 # "аргумент не по умолчанию следует за аргументом по умолчанию"
 # при оборачивмнии класса Training
 
-    
+
 class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: float = 1000

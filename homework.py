@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import Type, List, Dict
 
 
@@ -16,13 +16,12 @@ class InfoMessage:
                     ' Потрачено ккал: {calories:.3f}.')
 
     def get_message(self) -> str:
-        return self.MESSAGE.format(training_type=self.training_type,
-                                   duration=self.duration,
-                                   distance=self.distance,
-                                   speed=self.speed,
-                                   calories=self.calories)
+        return self.MESSAGE.format(**asdict(self))
+# Не смог разобрать с тем, как убрать ошибку
+# "аргумент не по умолчанию следует за аргументом по умолчанию"
+# при оборачивмнии класса Training
 
-
+    
 class Training:
     LEN_STEP: float = 0.65
     M_IN_KM: float = 1000
@@ -69,20 +68,16 @@ class Running(Training):
                 * self.MIN_IN_H)
 
 
+@dataclass
 class SportsWalking(Training):
+    action: int
+    duration: float
+    weight: float
+    height: float
     CALORIES_SPEED_HEIGHT_MULTIPLIER: float = 0.029
     CALORIES_WEIGHT_MULTIPLIER: float = 0.035
     KMH_IN_MSEC: float = 0.278
     CM_IN_M: float = 100
-
-    def __init__(self,
-                 action: int,
-                 duration: float,
-                 weight: float,
-                 height: float,
-                 ) -> None:
-        super().__init__(action, duration, weight)
-        self.height = height
 
     def get_spent_calories(self) -> float:
         return ((self.CALORIES_WEIGHT_MULTIPLIER * self.weight
@@ -92,20 +87,16 @@ class SportsWalking(Training):
                 * self.duration * self.MIN_IN_H)
 
 
+@dataclass
 class Swimming(Training):
+    action: int
+    duration: float
+    weight: float
+    length_pool: float
+    count_pool: float
     LEN_STEP = 1.38
     CALORIES_MEAN_SPEED_SHIFT = 1.1
     CALORIES_WEIGHT_MULTIPLIER: float = 2
-
-    def __init__(self, action: int,
-                 duration: float,
-                 weight: float,
-                 length_pool: float,
-                 count_pool,
-                 ) -> None:
-        super().__init__(action, duration, weight)
-        self.length_pool = length_pool
-        self.count_pool = count_pool
 
     def get_mean_speed(self) -> float:
         return (self.length_pool * self.count_pool
@@ -121,7 +112,8 @@ class Swimming(Training):
 DATA_TRAININGS: Dict[str, Type[Training]] = {
     'SWM': Swimming,
     'RUN': Running,
-    'WLK': SportsWalking}
+    'WLK': SportsWalking
+}
 
 
 def read_package(workout_type: str,
@@ -131,9 +123,7 @@ def read_package(workout_type: str,
 
 
 def main(training: Training) -> None:
-    info = training.show_training_info()
-    message = info.get_message()
-    print(message)
+    print(training.show_training_info().get_message())
 
 
 if __name__ == '__main__':
